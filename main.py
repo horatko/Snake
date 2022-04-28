@@ -11,6 +11,7 @@ class Snake:
 
     def __init__(self):
         
+    
         self.smer_snake="RIGHT"
         self.snake_size=20
         self.okno=[400,400]
