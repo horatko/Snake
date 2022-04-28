@@ -10,8 +10,7 @@ import random
 class Snake:
 
     def __init__(self):
-        
-    
+            
         self.smer_snake="RIGHT"
         self.snake_size=20
         self.okno=[400,400]
@@ -154,23 +153,8 @@ class Game():
                         self.okno_hry.fill(pygame.Color(0,0,0))
                         score = self.BIGFONT.render(f" SCORE {len(self.snake)} pro novou hru stiskni ESC", False, (255, 255, 255))
                         self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
-                    
-                        
-                    
-            
-            
-
-
-
-
-            
-
-                
-
-
-
-            
-            
+                                                    
+                       
             #draw snake and window update tick tack
             for part in self.snake.pozice:
                 pygame.draw.rect(self.okno_hry, self.snake.barva_hada, pygame.Rect(part["x"], part["y"], self.snake.snake_size, self.snake.snake_size))
@@ -181,17 +165,6 @@ class Game():
             pygame.display.update()
             self.okno_hry.fill(pygame.Color(0,0,0))
             self.clock.tick(self.snake.game_speed)
-
-        
-
-
-        
-            
-
-
-
-
-
 
 
 if __name__ == "__main__":
