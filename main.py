@@ -91,6 +91,7 @@ class Game():
         pygame.draw.rect(self.okno_hry, self.snake.barva_hada, pygame.Rect(self.snake.okno[0]/2, self.snake.okno[1]/2, self.snake.snake_size, self.snake.snake_size))
         self.eat = self.snake.generate_eat()
         self.running=True
+        self.pauza=1
 
     def run(self):    
         while self.running:
@@ -98,6 +99,18 @@ class Game():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    
+                    if event.key == pygame.K_p:
+                        print("pic")
+                        self.pauza=self.pauza*-1
+                        if self.pauza==-1:
+                            if self.pauza==-1:
+                                self.game_pause()
+                        else:
+                            self.running=True
+                        
+                        
         
             keys= pygame.key.get_pressed()
             self.snake.smer_snake=self.snake.novy_smer(keys)
@@ -124,7 +137,7 @@ class Game():
                             if event.key == pygame.K_ESCAPE:
                                 self.snake.pozice=[]
                                 self.snake.pozice = [{"x": self.snake.okno[0]/2 , "y" : self.snake.okno[1]/2}]
-                                eat = self.snake.generate_eat()
+                                self.eat = self.snake.generate_eat()
                                 running=True
                                 
                     else:
@@ -153,18 +166,48 @@ class Game():
                         self.okno_hry.fill(pygame.Color(0,0,0))
                         score = self.BIGFONT.render(f" SCORE {len(self.snake)} pro novou hru stiskni ESC", False, (255, 255, 255))
                         self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
+            
+            
                                                     
                        
             #draw snake and window update tick tack
             for part in self.snake.pozice:
                 pygame.draw.rect(self.okno_hry, self.snake.barva_hada, pygame.Rect(part["x"], part["y"], self.snake.snake_size, self.snake.snake_size))
             pygame.draw.rect(self.okno_hry, self.eat_color, pygame.Rect(self.eat["x"], self.eat["y"], self.snake.snake_size, self.snake.snake_size))
-            score2 = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)}", False, (255, 255, 255))
-            self.okno_hry.blit(score2,(10,10))
+            self.score2 = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)}", False, (255, 255, 255))
+            self.okno_hry.blit(self.score2,(10,10))
             
             pygame.display.update()
             self.okno_hry.fill(pygame.Color(0,0,0))
             self.clock.tick(self.snake.game_speed)
+
+            
+    def game_pause(self):
+        while self.pauza==-1:
+            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+                                    sys.exit()
+                                if event.type == pygame.KEYDOWN:
+                    
+                                    if event.key == pygame.K_p:
+                                        self.pauza*=-1
+                
+            for part in self.snake.pozice:
+                    pygame.draw.rect(self.okno_hry, self.snake.barva_hada, pygame.Rect(part["x"], part["y"], self.snake.snake_size, self.snake.snake_size))
+            pygame.draw.rect(self.okno_hry, self.eat_color, pygame.Rect(self.eat["x"], self.eat["y"], self.snake.snake_size, self.snake.snake_size))
+            self.score2 = self.BIGFONT.render(f" !!!Pauza!!!  SCORE  {len(self.snake.pozice)}", False, (255, 255, 255))
+            self.okno_hry.blit(self.score2,(100,200))
+                
+            pygame.display.update()
+            self.okno_hry.fill(pygame.Color(0,0,0))
+            self.clock.tick(self.snake.game_speed)
+  
+                        
+                        
+                            
+            
+
 
 
 if __name__ == "__main__":
@@ -172,9 +215,3 @@ if __name__ == "__main__":
      game=Game()
      game.run()
 
-
-    
-
-
-    
-        
