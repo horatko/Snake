@@ -143,13 +143,13 @@ class Game():
     def game_pause(self):
         while self.pauza==-1:
             for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pygame.quit()
-                                    sys.exit()
-                                if event.type == pygame.KEYDOWN:
-                    
-                                    if event.key == pygame.K_p:
-                                        self.pauza*=-1
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+    
+                    if event.key == pygame.K_p:
+                        self.pauza*=-1
                 
             self.show_snake((100,200),True)
 
@@ -181,8 +181,8 @@ class Game():
                     self.eat = self.snake.generate_eat()
                     self.running=True
                                 
-            else:
-                pygame.display.update()
-                self.okno_hry.fill(pygame.Color(0,0,0))
-                score = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)} pro novou hru stiskni ESC", False, (255, 255, 255))
-                self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
+            
+        pygame.display.update()
+        self.okno_hry.fill(pygame.Color(0,0,0))
+        score = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)} pro novou hru stiskni ESC", False, (255, 255, 255))
+        self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
