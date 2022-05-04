@@ -1,8 +1,13 @@
+from lib2to3.pgen2.token import NEWLINE
 from msilib.schema import Class
 from operator import truediv
 import pygame
 import sys
 import random
+from tkinter import *
+import csv
+
+
 
 class Snake:
 
@@ -74,12 +79,13 @@ class Snake:
                 return True
         return False
 
-class Game():
-
+class Game:
+    
     def __init__(self):
         #set deafault condicions
         pygame.init()
         self.snake=Snake()
+        
         pygame.display.set_caption("Snake by Jarmen")
         self.BIGFONT = pygame.font.SysFont("comicsans", 20)
         self.clock = pygame.time.Clock()
@@ -89,6 +95,8 @@ class Game():
         self.eat = self.snake.generate_eat()
         self.running=True
         self.pauza=1
+        self.score_uloz=0
+        
 
     def run(self):    
         while self.running:
@@ -124,14 +132,14 @@ class Game():
                 
                 self.running=False
 
-                while not self.running:
-                    self.show_gameover()
+                if not self.running:
+                    self.show_gameover(True)
                         
             if self.snake.self_colision():
                 self.running=False
                 
-                while not self.running:
-                    self.show_gameover()
+                if not self.running:
+                    self.show_gameover(True)
             
             
                                                     
@@ -168,21 +176,83 @@ class Game():
         self.okno_hry.fill(pygame.Color(0,0,0))
         self.clock.tick(self.snake.game_speed)
 
-    def show_gameover(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                
-                if event.key == pygame.K_ESCAPE:
-                    self.snake.pozice=[]
-                    self.snake.pozice = [{"x": self.snake.okno[0]/2 , "y" : self.snake.okno[1]/2}]
-                    self.eat = self.snake.generate_eat()
-                    self.running=True
-                                
+    def show_gameover(self, ingameover):
+        self.pole=[]
+        #with open('score.csv', 'a', newline="\n" ) as self.soubor:
+            #self.writer=csv.writer(self.soubor)
+            #self.writer.writerow((user,str(len(self.snake.pozice))))
             
-        pygame.display.update()
-        self.okno_hry.fill(pygame.Color(0,0,0))
-        score = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)} pro novou hru stiskni ESC", False, (255, 255, 255))
-        self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
+            #self.soubor.close
+        with open('score.csv', 'r' ) as self.soubor:
+            self.reader=csv.reader(self.soubor)
+            for row in self.reader:
+                if row[0]==user:
+                    print(row[0])
+                    if int(row[1])<len(self.snake.pozice):
+                        row[1]=str(len(self.snake.pozice))
+
+                self.pole.append(row)
+            print(self.pole)
+
+            self.soubor.close
+            
+        
+        
+        while ingameover==True:
+        
+            
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    
+                    if event.key == pygame.K_ESCAPE:
+                        self.snake.pozice=[]
+                        
+                        
+                        self.snake.pozice = [{"x": self.snake.okno[0]/2 , "y" : self.snake.okno[1]/2}]
+                        self.eat = self.snake.generate_eat()
+                        self.running=True
+                        ingameover=False
+                                
+           
+            pygame.display.update()
+            self.okno_hry.fill(pygame.Color(0,0,0))
+            score = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)} pro novou hru stiskni ESC", False, (255, 255, 255))
+
+            self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
+
+class User():
+        
+    def __init__(self):
+          
+        self.window=Tk()
+        self.label=Label(self.window,text="Zadej jméno hráče", background="black", fg="white")
+        self.label.pack()
+        self.username=StringVar
+        self.vstup=Entry(self.window,textvariable=self.username)
+        self.vstup.pack()
+        self.button=Button(self.window, text="ulož", command=self.buttonclick)
+        self.button.pack()
+        
+        
+        self.window.mainloop()
+
+    def buttonclick(self):
+        
+        self.username=self.vstup.get()
+        global user
+        user=self.username
+
+        self.window.destroy()
+
+
+        
+
+        
+        
+        
+
+        
