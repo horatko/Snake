@@ -1,6 +1,7 @@
 from lib2to3.pgen2.token import NEWLINE
 from msilib.schema import Class
 from operator import truediv
+from unicodedata import decimal
 import pygame
 import sys
 import random
@@ -178,30 +179,39 @@ class Game:
 
     def show_gameover(self, ingameover):
         self.pole=[]
+        self.nalez=False
+
         #with open('score.csv', 'a', newline="\n" ) as self.soubor:
             #self.writer=csv.writer(self.soubor)
             #self.writer.writerow((user,str(len(self.snake.pozice))))
+            #self.soubor.close
             
             #self.soubor.close
         with open('score.csv', 'r' ) as self.soubor:
             self.reader=csv.reader(self.soubor)
             for row in self.reader:
-                if row[0]==user:
-                    print(row[0])
-                    if int(row[1])<len(self.snake.pozice):
-                        row[1]=str(len(self.snake.pozice))
-
                 self.pole.append(row)
-            print(self.pole)
-
-            self.soubor.close
+            for row in self.pole:
+                if row[1]==user:
+                    self.nalez=True
+                    if int(row[0])<=len(self.snake.pozice):
+                        row[0]=str(len(self.snake.pozice))
+                        
             
+            if not self.nalez:
+                self.pole.append([str(len(self.snake.pozice)),user])   
+               
+            print(self.pole)
+            self.soubor.close
+
+        with open('score.csv', 'w', newline="" ) as self.soubor:
+            self.writer=csv.writer(self.soubor)           
+            self.writer.writerows(self.pole)
+            self.soubor.close 
         
         
         while ingameover==True:
         
-            
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
