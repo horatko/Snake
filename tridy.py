@@ -1,5 +1,6 @@
 from lib2to3.pgen2.token import NEWLINE
 from msilib.schema import Class
+from ntpath import join
 from operator import truediv
 from unicodedata import decimal
 import pygame
@@ -181,14 +182,9 @@ class Game:
         self.pole=[]
         self.nalez=False
 
-        #with open('score.csv', 'a', newline="\n" ) as self.soubor:
-            #self.writer=csv.writer(self.soubor)
-            #self.writer.writerow((user,str(len(self.snake.pozice))))
-            #self.soubor.close
-            
-            #self.soubor.close
-        with open('score.csv', 'r' ) as self.soubor:
-            self.reader=csv.reader(self.soubor)
+        
+        with open('score.csv', 'r' ) as soubor:
+            self.reader=csv.reader(soubor)
             for row in self.reader:
                 self.pole.append(row)
             for row in self.pole:
@@ -199,15 +195,18 @@ class Game:
                         
             
             if not self.nalez:
-                self.pole.append([str(len(self.snake.pozice)),user])   
+                self.pole.append([str(len(self.snake.pozice)),user])
+        def lambsort(poleofsort):
+            return int(poleofsort[0]) 
+        self.pole.sort(key=lambsort, reverse=True)
                
-            print(self.pole)
-            self.soubor.close
+      
+            
 
-        with open('score.csv', 'w', newline="" ) as self.soubor:
-            self.writer=csv.writer(self.soubor)           
+        with open('score.csv', 'w', newline="" ) as soubor:
+            self.writer=csv.writer(soubor)           
             self.writer.writerows(self.pole)
-            self.soubor.close 
+            
         
         
         while ingameover==True:
@@ -231,8 +230,13 @@ class Game:
             pygame.display.update()
             self.okno_hry.fill(pygame.Color(0,0,0))
             score = self.BIGFONT.render(f" SCORE {len(self.snake.pozice)} pro novou hru stiskni ESC", False, (255, 255, 255))
-
-            self.okno_hry.blit(score,(10,self.snake.okno[0]/2))
+            self.okno_hry.blit(score,(10,10))
+            hrac1=self.BIGFONT.render(f"1. místo    {self.pole[0][1]}     {self.pole[0][0]} ",False, (255, 255, 255))
+            hrac2=self.BIGFONT.render(f"2. místo    {self.pole[1][1]}     {self.pole[1][0]} ",False, (255, 255, 255))
+            hrac3=self.BIGFONT.render(f"3. místo    {self.pole[2][1]}     {self.pole[2][0]} ",False, (255, 255, 255))
+            self.okno_hry.blit(hrac1,(100,160))
+            self.okno_hry.blit(hrac2,(100,180))
+            self.okno_hry.blit(hrac3,(100,200))
 
 class User():
         
